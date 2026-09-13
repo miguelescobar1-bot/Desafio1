@@ -11,5 +11,12 @@ void inicializarTableroAleatorio(unsigned char* buffer, int filas, int columnas)
 unsigned char obtenerFicha(const unsigned char* buffer, int fila, int columna, int totalCols);
 void guardarFicha(unsigned char* buffer, int fila, int columna, int totalCols, unsigned char valor);
 char fichaACaracter(unsigned char ficha);
+bool eliminarFichaUsuario(unsigned char* buffer, int filas, int columnas, int f, int c, int& fichasEliminadasTotal);
+unsigned char* agregarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados);
+unsigned char* eliminarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados);
+
+
+//Funciones de estado
+void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas);
 
 #endif // TABLERO_H

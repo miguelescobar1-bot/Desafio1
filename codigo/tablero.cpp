@@ -79,3 +79,97 @@ unsigned char obtenerFicha(const unsigned char* buffer, int fila, int columna, i
     }
 }
 
+bool eliminarFichaUsuario(unsigned char* buffer, int filas, int columnas, int f, int c, int& fichasEliminadasTotal) {
+    if (f < 0 || f >= filas || c < 0 || c >= columnas) return false;
+
+    unsigned char actual = obtenerFicha(buffer, f, c, columnas);
+
+    if (actual != 6) {
+        guardarFicha(buffer, f, c, columnas, 6);
+        fichasEliminadasTotal++;
+
+
+        aplicarGravedadYRellenar(buffer, filas, columnas);
+
+        return true;
+    }
+
+    return false;
+}
+
+void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas) {
+    for (int c = 0; c < columnas; ++c) {
+        int posEscribir = filas - 1;
+        for (int f = filas - 1; f >= 0; --f) {
+            unsigned char ficha = obtenerFicha(buffer, f, c, columnas);
+            if (ficha != 6) {
+                guardarFicha(buffer, posEscribir, c, columnas, ficha);
+                if (posEscribir != f) {
+                    guardarFicha(buffer, f, c, columnas, 6);
+                }
+                posEscribir--;
+            }
+        }
+        for (int f = posEscribir; f >= 0; --f) {
+            guardarFicha(buffer, f, c, columnas, rand() % 6);
+        }
+
+    }
+}
+
+unsigned char* agregarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados) {
+    int totalNuevas = (filas + 1) * columnas;
+    int bytesNuevos = calcularBytesNecesarios(totalNuevas);
+
+    unsigned char* nuevoBuffer = new unsigned char[bytesNuevos + 1];
+    for (int i = 0; i <= bytesNuevos; ++i) nuevoBuffer[i] = 0;
+
+    int filasNuevas = filas + 1;
+    for (int f = 0; f < filasNuevas; ++f) {
+        for (int c = 0; c < columnas; ++c) {
+            if (f < posFila) {
+                guardarFicha(nuevoBuffer, f, c, columnas, obtenerFicha(buffer, f, c, columnas));
+            } else if (f == posFila) {
+                guardarFicha(nuevoBuffer, f, c, columnas, rand() % 6);
+            } else {
+                guardarFicha(nuevoBuffer, f, c, columnas, obtenerFicha(buffer, f - 1, c, columnas));
+            }
+        }
+    }
+
+    delete[] buffer;
+    filas = filasNuevas;
+    bytesReservados = bytesNuevos;
+    return nuevoBuffer;
+}
+
+unsigned char* eliminarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados) {
+    if (filas <= 1 || posFila < 0 || posFila >= filas) return buffer;
+
+    int totalNuevas = (filas - 1) * columnas;
+    int bytesNecesarios = calcularBytesNecesarios(totalNuevas);
+
+    bool reasignar = ((double)bytesNecesarios / bytesReservados) < 0.65;
+    unsigned char* destino = buffer;
+
+    if (reasignar) {
+        destino = new unsigned char[bytesNecesarios + 1];
+        for (int i = 0; i <= bytesNecesarios; ++i) destino[i] = 0;
+    }
+
+    int filasNuevas = filas - 1;
+    for (int f = 0; f < filasNuevas; ++f) {
+        for (int c = 0; c < columnas; ++c) {
+            int fOrigen = (f < posFila) ? f : f + 1;
+            guardarFicha(destino, f, c, columnas, obtenerFicha(buffer, fOrigen, c, columnas));
+        }
+    }
+
+    if (reasignar) {
+        delete[] buffer;
+        bytesReservados = bytesNecesarios;
+    }
+
+    filas = filasNuevas;
+    return destino;
+}
