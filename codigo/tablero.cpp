@@ -1,6 +1,19 @@
 #include "tablero.h"
 #include <cstdlib>
 
+char fichaACaracter(unsigned char ficha) {
+    switch (ficha) {
+    case 0: return 'A';
+    case 1: return 'B';
+    case 2: return 'C';
+    case 3: return 'D';
+    case 4: return 'E';
+    case 5: return 'F';
+    case 6: return ' ';
+    case 7: return '*';
+    default: return '?';
+    }
+}
 
 unsigned char* ReservarMemoriaTablero(int filas, int columnas, int& bytesReservados) {
     bytesReservados = calcularBytesNecesarios(filas * columnas);
@@ -44,19 +57,7 @@ void guardarFicha(unsigned char* buffer, int fila, int columna, int totalCols, u
     }
 }
 
-char fichaACaracter(unsigned char ficha) {
-    switch (ficha) {
-    case 0: return 'A';
-    case 1: return 'B';
-    case 2: return 'C';
-    case 3: return 'D';
-    case 4: return 'E';
-    case 5: return 'F';
-    case 6: return ' ';
-    case 7: return '*';
-    default: return '?';
-    }
-}
+
 
 unsigned char obtenerFicha(const unsigned char* buffer, int fila, int columna, int totalCols) {
     if (!buffer || fila < 0 || columna < 0) return 0;
@@ -97,25 +98,7 @@ bool eliminarFichaUsuario(unsigned char* buffer, int filas, int columnas, int f,
     return false;
 }
 
-void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas) {
-    for (int c = 0; c < columnas; ++c) {
-        int posEscribir = filas - 1;
-        for (int f = filas - 1; f >= 0; --f) {
-            unsigned char ficha = obtenerFicha(buffer, f, c, columnas);
-            if (ficha != 6) {
-                guardarFicha(buffer, posEscribir, c, columnas, ficha);
-                if (posEscribir != f) {
-                    guardarFicha(buffer, f, c, columnas, 6);
-                }
-                posEscribir--;
-            }
-        }
-        for (int f = posEscribir; f >= 0; --f) {
-            guardarFicha(buffer, f, c, columnas, rand() % 6);
-        }
 
-    }
-}
 
 unsigned char* agregarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados) {
     int totalNuevas = (filas + 1) * columnas;
@@ -172,4 +155,45 @@ unsigned char* eliminarFila(unsigned char* buffer, int& filas, int columnas, int
 
     filas = filasNuevas;
     return destino;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas) {
+    for (int c = 0; c < columnas; ++c) {
+        int posEscribir = filas - 1;
+        for (int f = filas - 1; f >= 0; --f) {
+            unsigned char ficha = obtenerFicha(buffer, f, c, columnas);
+            if (ficha != 6) {
+                guardarFicha(buffer, posEscribir, c, columnas, ficha);
+                if (posEscribir != f) {
+                    guardarFicha(buffer, f, c, columnas, 6);
+                }
+                posEscribir--;
+            }
+        }
+        for (int f = posEscribir; f >= 0; --f) {
+            guardarFicha(buffer, f, c, columnas, rand() % 6);
+        }
+
+    }
 }

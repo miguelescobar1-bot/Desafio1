@@ -28,12 +28,12 @@ void mostrarTableroConsola(const unsigned char* buffer, int filas, int columnas)
 
 
 void mostrarMenu() {
-    std::cout << "\n--- MENU DE JUEGO ---\n";
+    std::cout << "\n--- MENU PRINCIPAL ---\n";
     std::cout << "1. Eliminar ficha manualmente\n";
     std::cout << "2. Agregar Fila\n";
     std::cout << "3. Eliminar Fila\n";
     std::cout << "4. Agregar Columna\n";
     std::cout << "5. Eliminar Columna\n";
     std::cout << "0. Salir\n";
-    std::cout << "Seleccione una opcion: ";
+    std::cout << "Seleccione alguna de las opciones: ";
 }

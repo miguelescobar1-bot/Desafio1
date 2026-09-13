@@ -12,7 +12,7 @@ int main() {
     int bytesReservados = 0;
 
     int eliminacionesUsuario = 0;
-    int fichasEliminadasTotal = 0;
+
 
     unsigned char* tablero = ReservarMemoriaTablero(filas, columnas, bytesReservados);
     inicializarTableroAleatorio(tablero, filas, columnas);
@@ -23,9 +23,9 @@ int main() {
         mostrarTableroConsola(tablero, filas, columnas);
 
         std::cout << "\n--- ESTADISTICAS DEL JUEGO ---\n";
-        std::cout << "Dimensiones: " << filas << "x" << columnas << "\n";
-        std::cout << "Memoria Fisica Reservada: " << bytesReservados << " bytes\n";
-        std::cout << "Eliminaciones Usuario: " << eliminacionesUsuario << "\n";
+        std::cout << "Las dimensiones del Tablero son: " << filas << "x" << columnas << "\n";
+        std::cout << "La Memoria Fisica Reservada del programa es: " << bytesReservados << " bytes\n";
+        std::cout << "Fichas eliminadas por el Usuario: " << eliminacionesUsuario << "\n";
 
         mostrarMenu();
         std::cin >> opcion;
