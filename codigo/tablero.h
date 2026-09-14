@@ -14,7 +14,8 @@ char fichaACaracter(unsigned char ficha);
 bool eliminarFichaUsuario(unsigned char* buffer, int filas, int columnas, int f, int c, int& fichasEliminadasTotal);
 unsigned char* agregarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados);
 unsigned char* eliminarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados);
-
+unsigned char* eliminarColumna(unsigned char* buffer, int filas, int& columnas, int posCol, int& bytesReservados);
+unsigned char* agregarColumna(unsigned char* buffer, int filas, int& columnas, int posCol, int& bytesReservados);
 
 //Funciones de estado
 void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas);

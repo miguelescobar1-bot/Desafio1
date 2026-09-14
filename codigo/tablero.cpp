@@ -157,25 +157,60 @@ unsigned char* eliminarFila(unsigned char* buffer, int& filas, int columnas, int
     return destino;
 }
 
+unsigned char* agregarColumna(unsigned char* buffer, int filas, int& columnas, int posCol, int& bytesReservados) {
+    int totalNuevas = filas * (columnas + 1);
+    int bytesNuevos = calcularBytesNecesarios(totalNuevas);
 
+    unsigned char* nuevoBuffer = new unsigned char[bytesNuevos + 1];
+    for (int i = 0; i <= bytesNuevos; ++i) nuevoBuffer[i] = 0;
 
+    int colsNuevas = columnas + 1;
+    for (int f = 0; f < filas; ++f) {
+        for (int c = 0; c < colsNuevas; ++c) {
+            if (c < posCol) {
+                guardarFicha(nuevoBuffer, f, c, colsNuevas, obtenerFicha(buffer, f, c, columnas));
+            } else if (c == posCol) {
+                guardarFicha(nuevoBuffer, f, c, colsNuevas, rand() % 6);
+            } else {
+                guardarFicha(nuevoBuffer, f, c, colsNuevas, obtenerFicha(buffer, f, c - 1, columnas));
+            }
+        }
+    }
 
+    delete[] buffer;
+    columnas = colsNuevas;
+    bytesReservados = bytesNuevos;
+    return nuevoBuffer;
+}
 
+unsigned char* eliminarColumna(unsigned char* buffer, int filas, int& columnas, int posCol, int& bytesReservados) {
+    if (columnas <= 1 || posCol < 0 || posCol >= columnas) return buffer;
+    int totalNuevas = filas * (columnas - 1);
+    int bytesNecesarios = calcularBytesNecesarios(totalNuevas);
+    bool reasignar = ((double)bytesNecesarios / bytesReservados) < 0.65;
+    unsigned char* destino = buffer;
 
+    if (reasignar) {
+        destino = new unsigned char[bytesNecesarios + 1];
+        for (int i = 0; i <= bytesNecesarios; ++i) destino[i] = 0;
+    }
 
+    int colsNuevas = columnas - 1;
+    for (int f = 0; f < filas; ++f) {
+        for (int c = 0; c < colsNuevas; ++c) {
+            int cOrigen = (c < posCol) ? c : c + 1;
+            guardarFicha(destino, f, c, colsNuevas, obtenerFicha(buffer, f, cOrigen, columnas));
+        }
+    }
 
+    if (reasignar) {
+        delete[] buffer;
+        bytesReservados = bytesNecesarios;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
+    columnas = colsNuevas;
+    return destino;
+}
 
 
 void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas) {
@@ -196,4 +231,10 @@ void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas) {
         }
 
     }
+}
+
+bool procesarCombinacionesYCascadas(unsigned char* buffer, int filas, int columnas, int& combinacionesDetectadas, int& cascadasTotal, int& fichasEliminadasTotal){
+    // En desarrollo la funcion
+
+    return 0;
 }
