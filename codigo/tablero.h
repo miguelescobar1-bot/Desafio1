@@ -19,5 +19,7 @@ unsigned char* agregarColumna(unsigned char* buffer, int filas, int& columnas, i
 
 //Funciones de estado
 void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas);
+bool procesarCombinacionesYCascadas(unsigned char* buffer, int filas, int columnas, int& combinacionesDetectadas, int& cascadasTotal, int& fichasEliminadasTotal);
+
 
 #endif // TABLERO_H

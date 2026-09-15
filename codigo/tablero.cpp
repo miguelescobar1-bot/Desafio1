@@ -234,7 +234,66 @@ void aplicarGravedadYRellenar(unsigned char* buffer, int filas, int columnas) {
 }
 
 bool procesarCombinacionesYCascadas(unsigned char* buffer, int filas, int columnas, int& combinacionesDetectadas, int& cascadasTotal, int& fichasEliminadasTotal){
-    // En desarrollo la funcion
+    bool huboCascada = false;
 
-    return 0;
+    while (true) {
+        int totalPos = filas * columnas;
+        bool* marcados = new bool[totalPos](); // () inicializa todo en false directamente
+
+        bool comboEncontrado = false;
+
+        // Horizontales
+        for (int f = 0; f < filas; ++f) {
+            for (int c = 0; c < columnas - 2; ++c) {
+                unsigned char f1 = obtenerFicha(buffer, f, c, columnas);
+                unsigned char f2 = obtenerFicha(buffer, f, c + 1, columnas);
+                unsigned char f3 = obtenerFicha(buffer, f, c + 2, columnas);
+
+                if (f1 < 6 && f1 == f2 && f2 == f3) {
+                    marcados[f * columnas + c] = true;
+                    marcados[f * columnas + c + 1] = true;
+                    marcados[f * columnas + c + 2] = true;
+                    comboEncontrado = true;
+                }
+            }
+        }
+        // Verticales
+        for (int c = 0; c < columnas; ++c) {
+            for (int f = 0; f < filas - 2; ++f) {
+                unsigned char f1 = obtenerFicha(buffer, f, c, columnas);
+                unsigned char f2 = obtenerFicha(buffer, f + 1, c, columnas);
+                unsigned char f3 = obtenerFicha(buffer, f + 2, c, columnas);
+
+                if (f1 < 6 && f1 == f2 && f2 == f3) {
+                    marcados[f * columnas + c] = true;
+                    marcados[(f + 1) * columnas + c] = true;
+                    marcados[(f + 2) * columnas + c] = true;
+                    comboEncontrado = true;
+                }
+            }
+        }
+
+        if (!comboEncontrado) {
+            delete[] marcados;
+            break;
+        }
+
+        combinacionesDetectadas++;
+        if (huboCascada) cascadasTotal++;
+        huboCascada = true;
+
+        for (int f = 0; f < filas; ++f) {
+            for (int c = 0; c < columnas; ++c) {
+                if (marcados[f * columnas + c]) {
+                    guardarFicha(buffer, f, c, columnas, 6);
+                    fichasEliminadasTotal++;
+                }
+            }
+        }
+
+        delete[] marcados;
+        aplicarGravedadYRellenar(buffer, filas, columnas);
+   }
+
+    return huboCascada;
 }
