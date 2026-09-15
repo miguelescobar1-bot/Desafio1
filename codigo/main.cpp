@@ -54,23 +54,34 @@ int main() {
             }
         }
         else if (opcion == 2) { // AGREGAR FILA
-            // Provision, Pendiente por terminar.
-            std::cout << "En desarrollo, Provisional.";
-        }
-        else if (opcion == 3) { // ELIMINAR FILA
-            // Provision, Pendiente por terminar.
-            std::cout << "En desarrollo, Provisional.";
-        }
+            int pos;
+            std::cout << "Ingrese indice de fila a insertar (0 a " << filas << "): ";
+                std::cin >> pos;
+                tablero = agregarFila(tablero, filas, columnas, pos, bytesReservados);
+                procesarCombinacionesYCascadas(tablero, filas, columnas, combinacionesDetectadas, cascadasTotal, fichasEliminadasTotal);
+            }
+         else if (opcion == 3) { // ELIMINAR FILA
+                int pos;
+                std::cout << "Ingrese indice de fila a eliminar (0 a " << filas - 1 << "): ";
+                std::cin >> pos;
+                tablero = eliminarFila(tablero, filas, columnas, pos, bytesReservados);
+                procesarCombinacionesYCascadas(tablero, filas, columnas, combinacionesDetectadas, cascadasTotal, fichasEliminadasTotal);
+            }
         else if (opcion == 4) { // AGREGAR COLUMNA
-            // Provision, Pendiente por terminar.
-            std::cout << "En desarrollo, Provisional.";
-        }
+                int pos;
+                std::cout << "Ingrese indice de columna a insertar (0 a " << columnas << "): ";
+                std::cin >> pos;
+                tablero = agregarColumna(tablero, filas, columnas, pos, bytesReservados);
+                procesarCombinacionesYCascadas(tablero, filas, columnas, combinacionesDetectadas, cascadasTotal, fichasEliminadasTotal);
+            }
         else if (opcion == 5) { // ELIMINAR COLUMNA
-            // Provision, Pendiente por terminar.
-            std::cout << "En desarrollo, Provisional.";
+                int pos;
+                std::cout << "Ingrese indice de columna a eliminar (0 a " << columnas - 1 << "): ";
+                std::cin >> pos;
+                tablero = eliminarColumna(tablero, filas, columnas, pos, bytesReservados);
+                procesarCombinacionesYCascadas(tablero, filas, columnas, combinacionesDetectadas, cascadasTotal, fichasEliminadasTotal);
+            }
         }
-        break ; // Provisional, Pendiente desarrollo.
-    }
 
     delete[] tablero;
     return 0;
