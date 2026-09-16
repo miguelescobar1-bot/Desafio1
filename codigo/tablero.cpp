@@ -101,6 +101,7 @@ bool eliminarFichaUsuario(unsigned char* buffer, int filas, int columnas, int f,
 
 
 unsigned char* agregarFila(unsigned char* buffer, int& filas, int columnas, int posFila, int& bytesReservados) {
+    if (posFila < 0 || posFila > filas) return buffer;
     int totalNuevas = (filas + 1) * columnas;
     int bytesNuevos = calcularBytesNecesarios(totalNuevas);
 
@@ -158,6 +159,7 @@ unsigned char* eliminarFila(unsigned char* buffer, int& filas, int columnas, int
 }
 
 unsigned char* agregarColumna(unsigned char* buffer, int filas, int& columnas, int posCol, int& bytesReservados) {
+    if (posCol < 0 || posCol > columnas) return buffer;
     int totalNuevas = filas * (columnas + 1);
     int bytesNuevos = calcularBytesNecesarios(totalNuevas);
 

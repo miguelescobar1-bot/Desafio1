@@ -7,8 +7,13 @@
 int main() {
     srand(time(0));
 
-    int filas = 6;
-    int columnas = 6;
+    int filas = 0, columnas = 0;
+
+    std::cout << "Ingrese numero de filas (minimo 3): ";
+    std::cin >> filas;
+    std::cout << "Ingrese numero de columnas (minimo 3): ";
+    std::cin >> columnas;
+
     int bytesReservados = 0;
 
     int eliminacionesUsuario = 0;
@@ -48,6 +53,7 @@ int main() {
             std::cin >> f >> c;
 
             if (eliminarFichaUsuario(tablero, filas, columnas, f, c, fichasEliminadasTotal)) {
+                eliminacionesUsuario++;
                 procesarCombinacionesYCascadas(tablero, filas, columnas, combinacionesDetectadas, cascadasTotal, fichasEliminadasTotal);
             } else {
                 std::cout << "Coordenada invalida o casilla vacia.\n";
